@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h2 class="sub-header">{{ bug_type }} Bugs: {{ bugs|length }} total</h2>
+<div class="table-responsive">
+<table class="table table-striped">
+
+  <thead>
+    <tr>
+      <th>Bug #</th>
+      <th>Importance</th>
+      <th>Title</th>
+      <th>Assignee</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for b in bugs %}
+      <tr>
+        <td><a href="{{ b.web_link }}">{{ b.id }}</a></td>
+        <td>{{ b.importance }}</td>
+        <td>{{ b.title }}</td>
+        <td><a href="{{ b.assignee_link }}">{{ b.assignee }}</a></td>
+        <td>{{ b.status }}</td>
+      </tr>
+    {% endfor %}          
+  </tbody>
+</table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h1 class="page-header">Overview</h1>
+
+<div class="container">
+  <p><b>Name</b>: {{ project.display_name }}</p>
+  <p><b>Summary</b>: {{ project.summary }}</p>
+  <p><b>URL</b>: <a href="https://launchpad.net/{{ project.name }}">https://launchpad.net/{{ project.name }}</a></p>
+</div>
+
+{% endblock %}

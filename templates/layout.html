@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Launchpad Reporting">
+    <meta name="author" content="Roman Alekseenkov">
+
+    <title>Launchpad Reporting</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Dashboard CSS -->
+    <link href="{{ url_for('static', filename='dashboard.css') }}" rel="stylesheet">
+
+    <!-- D3 & NVD3  CSS -->
+    <link href="{{ url_for('static', filename='nvd3/nv.d3.css') }}" rel="stylesheet">
+  </head>
+
+  <body>
+
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Project: {{ project.name }}</a>
+        </div>
+        <!--
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Help</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+        </div>
+        -->
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li {% if selected_overview %}class="active"{% endif %}><a href="{{ url_for('project_overview', project_name=project.name) }}">Overview</a></li>
+          </ul>
+
+          <ul class="nav nav-sidebar">
+            <li {% if selected_bug_table and bug_type == 'New' %}class="active"{% endif %}><a href="{{ url_for('bug_table', project_name=project.name, bug_type='New', milestone_name='None') }}">New bugs</a></li>
+          </ul>
+
+          {% for m in project.active_milestones|sort %}
+            <ul class="nav nav-sidebar">
+              <li {% if selected_bug_trends and milestone_name == m %}class="active"{% endif %}><a href="{{ url_for('bug_trends', project_name=project.name, milestone_name=m) }}">{{ m }}: Bug Trends</a></li>
+              <li {% if selected_bug_table and bug_type == 'Open' and milestone_name == m %}class="active"{% endif %}><a href="{{ url_for('bug_table', project_name=project.name, bug_type='Open', milestone_name=m) }}">{{ m }}: Open Bugs</a></li>
+              <li {% if selected_bug_table and bug_type == 'Incomplete' and milestone_name == m %}class="active"{% endif %}><a href="{{ url_for('bug_table', project_name=project.name, bug_type='Incomplete', milestone_name=m) }}">{{ m }}: Incomplete Bugs</a></li>
+              <li {% if selected_bug_table and bug_type == 'Closed' and milestone_name == m %}class="active"{% endif %}><a href="{{ url_for('bug_table', project_name=project.name, bug_type='Closed', milestone_name=m) }}">{{ m }}: Closed Bugs</a></li>
+            </ul>
+          {% endfor %}          
+          
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            {% block body %}{% endblock %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{{ url_for('static', filename='jquery/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h2 class="page-header">{{ milestone_name }} Release Bug Trends</h2>
+
+<div class="row placeholders">
+	<div id="bug-report-chart">
+	  <svg>Loading...</svg>
+	</div>
+</div>
+
+<script src="{{ url_for('static', filename='d3/d3.v3.js') }}"></script>
+<script src="{{ url_for('static', filename='nvd3/nv.d3.js') }}"></script>
+<script>
+	<!-- Bug report chart -->
+	d3.json('/project/{{ project.name }}/api/release_chart/{{ milestone_name }}/get_data', function(data) {
+		nv.addGraph(function() {
+		  var chart = nv.models.stackedAreaChart()
+		                .x(function(d) { return d[0] })
+		                .y(function(d) { return d[1] })
+		                .clipEdge(true)
+		                .useInteractiveGuideline(true);
+
+		  chart.xAxis
+		      .showMaxMin(false)
+		      .tickFormat(function(d) { return d3.time.format('%x')(new Date(d)) });
+
+		  chart.yAxis
+		      .tickFormat(d3.format(',.0f'));
+
+		  d3.select('#bug-report-chart svg')
+		    .datum(data)
+		      .transition().duration(500).call(chart);
+
+		  nv.utils.windowResize(chart.update);
+
+		  return chart;
+		});
+	})
+
+</script>
+
+{% endblock %}
