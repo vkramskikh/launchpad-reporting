@@ -16,3 +16,8 @@ Getting Started
 ```
 
 After that, open http://localhost:4444 in your browser.
+
+
+Screenshots
+===========
+![alt tag](https://raw2.github.com/ralekseenkov/launchpad-reporting/master/screenshots/release_bug_trends.png)
