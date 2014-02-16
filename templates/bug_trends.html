@@ -19,13 +19,16 @@
 		                .x(function(d) { return d[0] })
 		                .y(function(d) { return d[1] })
 		                .clipEdge(true)
+		                .margin({left: 75})
 		                .useInteractiveGuideline(true);
 
 		  chart.xAxis
 		      .showMaxMin(false)
+		      .axisLabel('Date')
 		      .tickFormat(function(d) { return d3.time.format('%x')(new Date(d)) });
 
 		  chart.yAxis
+		  	  .axisLabel('Amount of bugs')
 		      .tickFormat(d3.format(',.0f'));
 
 		  d3.select('#bug-report-chart svg')
