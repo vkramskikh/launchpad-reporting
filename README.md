@@ -27,6 +27,11 @@ How it works
 - The results retrieved from Launchpad are cached for 5 minutes. See decorator @ttl_cache
 
 
+Limitations
+===========
+- Does not show private bugs, as it requires more complex authentication flow with Launchpad
+
+
 Screenshots
 ===========
 ![alt tag](https://raw2.github.com/ralekseenkov/launchpad-reporting/master/screenshots/release_bug_trends.png)
