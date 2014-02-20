@@ -8,12 +8,18 @@ from launchpad.lpdata import LaunchpadData
 app = flask.Flask(__name__)
 lpdata = LaunchpadData()
 
-@app.route('/project/<project_name>/bug_table/<bug_type>/<milestone_name>')
-def bug_table(project_name, bug_type, milestone_name):
+@app.route('/project/<project_name>/bug_table_for_status/<bug_type>/<milestone_name>')
+def bug_table_for_status(project_name, bug_type, milestone_name):
     project = lpdata.get_project(project_name)
     bugs = lpdata.get_bugs(project_name, LaunchpadData.BUG_STATUSES[bug_type], milestone_name)
     return flask.render_template("bug_table.html", project=project, bugs=bugs, bug_type=bug_type, milestone_name=milestone_name, selected_bug_table=True)
 
+@app.route('/project/<project_name>/bug_table_for_tag/<bug_tag>/<milestone_name>')
+def bug_table_for_tag(project_name, bug_tag, milestone_name):
+    project = lpdata.get_project(project_name)
+    bugs = lpdata.get_bugs(project_name, LaunchpadData.BUG_STATUSES_ALL, milestone_name, [bug_tag])
+    return flask.render_template("bug_table.html", project=project, bugs=bugs, bug_tag=bug_tag, milestone_name=milestone_name, selected_bug_table=True, breakdown_by_status=True)
+    
 @app.route('/project/<project_name>')
 def project_overview(project_name):
     project = lpdata.get_project(project_name)

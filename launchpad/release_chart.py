@@ -1,6 +1,7 @@
 import datetime
 import pytz
 from launchpad.lpdata import LaunchpadData
+from collections import OrderedDict
 from bisect import bisect_left
 from operator import itemgetter
 
@@ -16,13 +17,13 @@ class ReleaseChart():
         # the chart will span until tomorrow
         window_end = datetime.datetime.now(pytz.utc) + datetime.timedelta(days=1)
 
-        # chart series
-        data = {
-            "Open": [],
-            "Incomplete": [],
-            "Resolved": [],
-            "Verified": []
-        }
+        # add chart series in order from bottom to top
+        data = OrderedDict()
+        data["Verified"]    = [];
+        data["Resolved"]    = [];
+        data["In Progress"] = [];
+        data["Open"]        = [];
+        data["Incomplete"]  = [];
 
         # all dates
         all_dates = set()
@@ -84,32 +85,5 @@ class ReleaseChart():
                 chart_seconds = (all_dates_sorted[idx] - d3_start).total_seconds() * 1000.0
                 values.append( [int(chart_seconds), all_dates_values[idx]] )
             chart.append( {'key': t, 'values': values})
-
-        '''
-        data = []
-
-        d = datetime.datetime(2000, 10, 21)
-        values = []
-        fp = 1.0
-        for i in range(0, 60):
-            sp = (d-datetime.datetime(1970,1,1)).total_seconds() * 1000.0
-            values.append( [int(sp), fp] )
-            d = d + datetime.timedelta(days=1)
-            fp = fp + .2
-
-        data.append( {'key': "test", 'values': values})
-
-        d = datetime.datetime(2000, 10, 21, 6, 5, 4)
-        values = []
-        fp = 10.0
-        for i in range(0, 60):
-            sp = (d-datetime.datetime(1970,1,1)).total_seconds() * 1000.0
-            values.append( [int(sp), fp] )
-            d = d + datetime.timedelta(days=1)
-            fp = fp - 0.1
-
-
-        data.append( {'key': "test2", 'values': values})
-        '''
 
         return chart

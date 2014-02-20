@@ -3,8 +3,14 @@
 
 <h2 class="sub-header">{{ bug_type }} Bugs: {{ bugs|length }} total</h2>
 <div class="table-responsive">
-<table class="table table-striped">
 
+{% if breakdown_by_status %}
+
+... ... ...
+
+{% else %}
+
+<table class="table table-striped">
   <thead>
     <tr>
       <th>Bug #</th>
@@ -27,5 +33,7 @@
   </tbody>
 </table>
 </div>
+
+{% endif %}
 
 {% endblock %}

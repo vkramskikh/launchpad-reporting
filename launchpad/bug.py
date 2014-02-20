@@ -83,6 +83,11 @@ class Bug():
         if date_open is None:
             date_open = self.date_in_progress
 
+        # When the bug went to in progress state
+        date_in_progress = self.date_in_progress
+        if date_in_progress is None:
+            date_in_progress = self.date_left_new
+
         # When the bug was resolved or closed (e.g. as invalid)
         date_resolved = self.date_fix_committed
         if date_resolved is None:
@@ -106,8 +111,15 @@ class Bug():
             result.append( {"date": date_incomplete, "type": "Incomplete"} )
 
         # if the bug is "Open", then our assumption is "Open". And it's not currently resolved
-        if self.status in lpdata.LaunchpadData.BUG_STATUSES["Open"]:
+        if (self.status in lpdata.LaunchpadData.BUG_STATUSES["Open"]) and (self.status != "In Progress"):
             result.append( {"date": date_open, "type": "Open"} )
+
+        # if the bug is "In Progress", it will be shown as a special category
+        if (self.status in lpdata.LaunchpadData.BUG_STATUSES["Open"]) and (self.status == "In Progress"):
+            if date_open > date_in_progress:
+                return []
+            result.append( {"date": date_open, "type": "Open"} )
+            result.append( {"date": date_in_progress, "type": "In Progress"} )
 
         # if the bug is "Closed" (but not verified), then our assumption is "Open" -> "Resolved" 
         if (self.status in lpdata.LaunchpadData.BUG_STATUSES["Closed"]) and (self.status != "Fix Released"):
