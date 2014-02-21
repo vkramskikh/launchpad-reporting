@@ -5,6 +5,8 @@
 
 <div class="row placeholders">
   <div id="bug-report-chart">
+    <img src="{{ url_for('static', filename='loader.gif') }}" />
+
     <svg></svg>
   </div>
 </div>
@@ -21,7 +23,7 @@
                     .color(function(d) {
                       colors = {
                         "Open": "#FEA455", // dark orange
-                        "Incomplete": "#E16767", // dark red 
+                        "Incomplete": "#E16767", // dark red
                         "Resolved": "#B6E7AC", // light green
                         "Verified": "#6ABB6A", // dark green
                         "In Progress": "#619FC9" // dark blue
@@ -46,6 +48,8 @@
           .transition().duration(500).call(chart);
 
       nv.utils.windowResize(chart.update);
+
+      $('#bug-report-chart img').hide();
 
       return chart;
     });
